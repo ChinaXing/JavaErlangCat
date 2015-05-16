@@ -13,6 +13,7 @@ import java.util.Random;
 public class MockMessageConsumer implements MessageConsumer {
     Random random = new Random(System.currentTimeMillis());
     static Gson gson = new Gson();
+    String[] suffix = new String[]{"A", "B", "C", "D"};
 
     public void addListener(final MessageListener listener) {
         new Thread(new Runnable() {
@@ -23,18 +24,26 @@ public class MockMessageConsumer implements MessageConsumer {
                         Map<String, Object> map = new HashMap<String, Object>();
                         {
                             map.put("sn", "P_00000000000000_" + Integer.valueOf(random.nextInt(4)));
-                            map.put("devMac", "00:16:3E:02:2B:3D");
-                            map.put("rssi", -1 * random.nextInt(80));
+                            map.put("devMac", "00:16:3E:02:2B:3" + suffix[random.nextInt(4)]);
+                            map.put("rssi", -40 + -1 * random.nextInt(40));
                             map.put("arriveLeave", random.nextBoolean() ? 1 : 0);
                         }
                         listener.OnMessage(gson.toJson(map).getBytes());
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                     }
-                } catch (Exception e) {
+                } catch (
+                        Exception e
+                        )
+
+                {
                     e.printStackTrace();
                     System.exit(0);
                 }
             }
-        }).start();
+        }
+
+        ).
+
+                start();
     }
 }
